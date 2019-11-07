@@ -1,17 +1,17 @@
 import tkinter as tk
 import json
-import encrypt_mod
+import encrypt_mod     # My own module that encrypts the passwords
 
-HEIGHT = 700
-WIDTH = 800
+HEIGHT = 700   # Height and Width of Tkinter Window
+WIDTH = 800  
 
 user_info_f = 'data/user_info'
 
-def file_setup():
+def file_setup(): # This will set up the saved info file, if the file already exists then it will load it and save it while the program runs
     global user_info_f
     try:
         with open(user_info_f, 'r') as user_info_j:
-            user_info = json.load(user_info_j)
+            user_info = json.load(user_info_j)    
             user_info_j.close()
     except FileNotFoundError:
         with open(user_info_f, 'w') as user_info_j:
@@ -37,21 +37,21 @@ def check_login():
         if entered_password == saved_password:
             print("Correct password")
             message_label.config(text="Correct Password", fg='white')
-            window = tk.Toplevel(root)
+            window = tk.Toplevel(root) # Creates an empty window once a successful log-in is completed, it can be taken farther from here
         else:
             print("Incorrect password")
             message_label.config(text="Username or password is Incorrect", fg='red')
-            password.delete(first=0, last=total_pw_length)
+            password.delete(first=0, last=total_pw_length)   # This deletes entered password from the entry field
     
     except KeyError:
         print("User Not Found")
         message_label.config(text="Username or password is Incorrect", fg='red')
-        password.delete(first=0, last=total_pw_length)
+        password.delete(first=0, last=total_pw_length)       # This deletes entered password from the entry field
     
 def new_account():
-    global user_info_f
+    global user_info_f                             # Yes I know global variable = bad but this was the simplest way
     user_info = file_setup()
-    entered_username = (username.get()).lower()
+    entered_username = (username.get()).lower()    # gets the username and password entered
     entered_password = (password.get()).lower()
 
     entered_password = encrypt_mod.encrypt(entered_password) # Encrypts Password to be saved
@@ -85,7 +85,7 @@ message_label.place(relx=0.1, rely=0.5)
 username = tk.Entry(frame)
 username.place(relx=0.1, rely=0.2, relwidth=0.8, relheight=0.05)
 
-bullet = "\u2022"
+bullet = "\u2022" # The key for the password bullets
 password = tk.Entry(frame, show=bullet, width=15)
 password.place(relx=0.1, rely=0.4, relwidth=0.8, relheight=0.05)
 
